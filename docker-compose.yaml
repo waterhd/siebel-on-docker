@@ -4,7 +4,7 @@ version: '3.6'
 # Create a dedicated network with domain name docker.local
 networks:
   siebel:
-    name: docker.local    
+    name: ${DOMAIN}
 
 services:
 
@@ -22,5 +22,5 @@ services:
     networks:
       - siebel
     ports:
-      - 1521:1521
+      - 1521
 
