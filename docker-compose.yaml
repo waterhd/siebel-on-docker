@@ -1,0 +1,26 @@
+---
+version: '3.6'
+
+# Create a dedicated network with domain name docker.local
+networks:
+  siebel:
+    name: docker.local    
+
+services:
+
+  # Oracle Database
+  database:
+    image: oracle/database:12.1.0.2-ee
+    build:
+      network: host
+      context: ./images/database
+    environment:
+      - ORACLE_PWD=oracle12
+    volumes:
+      - ./data/oradata:/opt/oracle/oradata
+      - ./scripts/database:/opt/oracle/scripts/setup
+    networks:
+      - siebel
+    ports:
+      - 1521:1521
+
