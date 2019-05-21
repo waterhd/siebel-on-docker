@@ -28,7 +28,7 @@ If not available, a local web server can easily be started using `python`. From 
 python -m SimpleHTTPServer
 ```
 
-The base URL (http://localhost:8000) can be overridden by providing a value for build argument REPO_URL in the Docker Compose files or when running the Docker build commands manually.
+The base URL (http://localhost:8000) can be overridden by providing a value for build argument `REPO_URL` in the Docker Compose files or when running the Docker build commands manually.
 
 To check if the web server is accessible, click the link above and it will should show you an index of the install files.
 
@@ -45,7 +45,7 @@ A Siebel database is not required.
 
 For Siebel, make sure you have the required files for installing Siebel IP17 base and the desired update. For both you will need the base installer file as well as any language pack you want installed. By default, the only language pack installed is English.
 
-For an Siebel 19.4 installation in english, this means you would need to have at least the following files:
+For a Siebel 19.4 installation in English, this means you would need to have at least the following files:
 
 * `SBA_17.0.0.0_Base_Linux_Siebel_Enterprise_Server.jar`
 * `SBA_17.0.0.0_enu_Linux_Siebel_Enterprise_Server.jar`
@@ -66,6 +66,8 @@ These stores can be replaced by your own, make sure to adjust the domain name yo
 Location of keystore and truststore files can be adjusted by setting environment variables (`KEYSTORE` and `TRUSTSTORE`). When these variables are set, symbolic links are created in the original locations so that no other changes are required.
 
 By default the password for both stores is set to "`changeit`". It is recommended that you keep this password, because changeing the password requires re-encryption and modifying Java property files. Automatic encryption may be added in future versions or you may alter the property files yourself. Instructions are provided on [Oracle Support](https://support.oracle.com).
+
+For debugging any SSL issues due to possible misconfiguration of keystore or truststore, set environment variable `JAVAX_NET_DEBUG` to `all`.
 
 
 ## Build Docker Images

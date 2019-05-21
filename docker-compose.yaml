@@ -1,5 +1,5 @@
 ---
-version: '3.6'
+version: '3.5'
 
 # Create a dedicated network with domain name docker.local
 networks:
