@@ -1,0 +1,25 @@
+---
+version: '3.7'
+
+services:
+
+  # Oracle Database
+  database:
+    image: oracle/database:12.1.0.2-ee
+    build:
+      network: host
+      context: ./images/database
+    
+  # Server JRE, based on Oracle Linux image 
+  java:
+    image: java/serverjre:8
+    build:
+      network: host
+      context: ./images/java
+
+  # Oracle Client, based on Java Server JRE image
+  oracle-client:
+    image: oracle/instantclient-32:12.1.0.2
+    build:
+      network: host
+      context: ./images/instantclient-32

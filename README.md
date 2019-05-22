@@ -10,7 +10,13 @@ To build and run this project, it is assumed you have a supported Linux OS (Orac
 
 For convenience, Docker Compose files are provided, allowing for easy building and container orchestration. If needed, Docker Compose can be installed using [these instructions](https://docs.docker.com/compose/install/).
 
+### Oracle Database
+
 An existing Oracle database containing a Siebel schema is not required. If it is already available, you don't need to build the Oracle database image. In this case, simply delete or comment out the database section from the Docker compose file [`docker-compose.yaml`](docker-compose.yaml) and make sure to provide the correct database details, such as host and service name, as well as database credentials in the environment file [`siebel.env`](config/siebel.env).
+
+When the Oracle database image is used and the Oracle database container is started, it tries to detect an existing Oracle database in [`data/oradata`](data/oradata). If no database is found, one is created automatically, after which post-install scripts are run. These scripts are stored in the [`scripts/database`](scripts/database) directory and are mapped to the correct location in the Docker Compose file. 
+
+These scripts contain hardcoded usernames and passwords, so make any modifications, if needed, to match the values supplied in the environment files.
 
 When configured for automatic database schema installation (`DB_INSTALL` environment variable set to `true`), a vanilla Siebel database is installed, but only when the database configuration utilities are installed (`WITH_DBSRVR` set to `true`) and a blank schema is encountered after logging in using the table owner (or schema) account (`DB_TABLEOWNER`).
 
@@ -32,14 +38,29 @@ The base URL (http://localhost:8000) can be overridden by providing a value for 
 
 To check if the web server is accessible, click the link above and it will should show you an index of the install files.
 
-#### Oracle Database
+#### Java Server JRE
+
+The version of the Java JRE that comes with the Siebel installation does not provide proper support for Docker container CPU and memory limits. Therefore, some of the images in this project depend on an updated Java JRE image.
+
+To build the Java image, download the Java 1.8 Server JRE from [Oracle Technology Network](https://www.oracle.com/technetwork/java/javase/downloads/server-jre8-downloads-2133154.html) for the Linux x64 platform.
+
+At the moment, the latest update is 8u211 and the file is called:
+
+* `server-jre-8u211-linux-x64.tar.gz`
+
+
+#### Oracle Database Server
 
 For the Oracle database, make sure to download both files for Oracle 12c Release 1 for the Linux x86-64 platform. These files are called:
 
 * `linuxamd64_12102_database_1of2.zip`
 * `linuxamd64_12102_database_2of2.zip`.
 
-A Siebel database is not required.
+#### Oracle Database Client
+
+
+
+
 
 #### Siebel
 
@@ -86,10 +107,12 @@ or setting permissions to 777:
 chmod -R 777 data/oradata
 ```
 
+Build instructions are provided in a separate Docker Compose file. This is done because it allows to build dependent images for the final Oracle and Siebel images, such as Java Server JRE and Oracle Instant Client.
+
 To build all required Docker images, run the following command from the directory where you cloned the repository into:
 
 ```
-docker-compose build
+docker-compose -f build.yaml build
 ```
 
 ## Run the Project
@@ -99,4 +122,6 @@ To create the necessary networks and Docker containers, start the entire project
 ```
 docker-compose up
 ```
+
+
 
