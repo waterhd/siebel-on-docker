@@ -38,6 +38,8 @@ The base URL (http://localhost:8000) can be overridden by providing a value for 
 
 To check if the web server is accessible, click the link above and it will should show you an index of the install files.
 
+After having downloaded the files, make sure the checksums match the ones mentioned on the download site.
+
 #### Java Server JRE
 
 The version of the Java JRE that comes with the Siebel installation does not provide proper support for Docker container CPU and memory limits. Therefore, some of the images in this project depend on an updated Java JRE image.
@@ -51,16 +53,19 @@ At the moment, the latest update is 8u211 and the file is called:
 
 #### Oracle Database Server
 
-For the Oracle database, make sure to download both files for Oracle 12c Release 1 for the Linux x86-64 platform. These files are called:
+For the Oracle database server, make sure to download both files for Oracle 12c Release 1 for the Linux x86-64 platform. These files are called:
 
 * `linuxamd64_12102_database_1of2.zip`
 * `linuxamd64_12102_database_2of2.zip`.
 
 #### Oracle Database Client
 
+For the Oracle database client, make sure to download the necessary RPM files from [Oracle Technology Network](https://www.oracle.com/technetwork/topics/linuxsoft-082809.html). Although installing on a 64 bit OS, please make sure to download the 32-bit (Linux x86) files, since Siebel server is 32-bit software.
 
+The files are called:
 
-
+* `oracle-instantclient12.1-basic-12.1.0.2.0-1.i386.rpm`
+* `oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.i386.rpm`
 
 #### Siebel
 
