@@ -16,7 +16,7 @@ WORKDIR $JAVA_HOME
 ARG REPO_URL=http://localhost:8000
 
 # Java Server JRE version
-ARG JAVA_VERSION=8u201
+ARG JAVA_VERSION=8u211
 
 # Install tar
 RUN yum -y install tar gzip \
