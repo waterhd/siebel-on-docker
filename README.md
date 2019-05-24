@@ -50,6 +50,7 @@ At the moment, the latest update is 8u211 and the file is called:
 
 * `server-jre-8u211-linux-x64.tar.gz`
 
+For more information on Java SE support for Docker CPU and memory limits, please see this [Oracle blog post](https://blogs.oracle.com/java-platform-group/java-se-support-for-docker-cpu-and-memory-limits).
 
 #### Oracle Database Server
 

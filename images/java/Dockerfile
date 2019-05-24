@@ -26,4 +26,5 @@ RUN yum -y install tar gzip \
 # Install Server JRE
 RUN curl -f#L "$REPO_URL/server-jre-$JAVA_VERSION-linux-x64.tar.gz" | tar -xazv --strip-components=1 \
  && echo 'networkaddress.cache.ttl=5' >>jre/lib/security/java.security \
- && java -version
+ && java -version \
+ && rm -rf /tmp/*

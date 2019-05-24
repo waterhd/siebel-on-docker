@@ -1,19 +1,22 @@
 ---
 version: '3.5'
 
-# Create a dedicated network with domain name docker.local
+# Create a dedicated network with a domain name
 networks:
   siebel:
     name: ${DOMAIN}
+
+secrets:
+  keystore:
+    file: ./config/keystore.jks
+  truststore:
+    file: ./config/truststore.jks
 
 services:
 
   # Oracle Database
   database:
     image: oracle/database:12.1.0.2-ee
-    build:
-      network: host
-      context: ./images/database
     environment:
       - ORACLE_PWD=oracle12
     volumes:
@@ -24,3 +27,17 @@ services:
     ports:
       - 1521
 
+  # Siebel Application Interface Server #1
+  ai1:
+    image: siebel/ai:${SIEBEL_UPDATE}
+    hostname: ai1
+    domainname: ${DOMAIN}
+    networks:
+      - siebel
+    env_file:
+      - ./config/siebel.env
+    secrets:
+      - keystore
+      - truststore
+    ports:
+      - 8443

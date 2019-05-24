@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" logArgs="true" logEnv="false" logProps="true" />
+
+  <!-- Security listener. Documentation at /docs/config/listeners.html-->
+  <!--<Listener className="org.apache.catalina.security.SecurityListener" />-->
+  <!--APR library loader. Documentation at /docs/apr.html -->
+  <!--<Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" useAprConnector="true"/>-->
+
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container" type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory" pathname="conf/tomcat-users.xml"/>
+  </GlobalNamingResources>
+  <Service name="Catalina">
+    <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443"/>
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150"
+               SSLEnabled="true" scheme="https" secure="true"
+               SSLVerifyClient="require" SSLEngine="on" SSLVerifyDepth="2"
+               keystoreFile="${javax.net.ssl.keyStore}" keystorePass="${javax.net.ssl.keyStorePassword}"
+               truststoreFile="${javax.net.ssl.trustStore}" truststorePass="${javax.net.ssl.trustStorePassword}"
+               keystoreType="JKS" truststoreType="JKS"
+               clientAuth="false" sslProtocol="TLS"/>
+
+    <!-- Added AJP13 port with Secure=true, for SSL acceleration, see: https://tomcat.apache.org/tomcat-8.5-doc/config/http.html -->
+    <!--<Connector port="8009" protocol="AJP/1.3" secure="true"/>-->
+
+    <Engine name="Catalina" defaultHost="localhost">
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+      </Realm>
+      <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="false" deployOnStartup="true">
+
+        <!-- Changed access log valve to write to STDOUT. Useful for running inside a Docker container. -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="/proc/self/fd"
+               prefix="1" suffix="" rotatable="false" pattern="%h %l %u %t &quot;%r&quot; %s %b"/>
+      </Host>
+    </Engine>
+  </Service>
+</Server>

@@ -3,23 +3,33 @@ version: '3.7'
 
 services:
 
-  # Oracle Database
+  # Oracle Database (based on Oracle Linux image)
   database:
     image: oracle/database:12.1.0.2-ee
     build:
       network: host
       context: ./images/database
-    
-  # Server JRE, based on Oracle Linux image 
+
+  # Server JRE (based on Oracle Linux image)
   java:
     image: java/serverjre:8
     build:
       network: host
       context: ./images/java
 
-  # Oracle Client, based on Java Server JRE image
+  # Oracle Client (based on Java Server JRE image)
   oracle-client:
     image: oracle/instantclient-32:12.1.0.2
     build:
       network: host
       context: ./images/instantclient-32
+
+  # Siebel Application Interface (based on Java Server JRE image)
+  ai:
+    image: siebel/ai:${SIEBEL_UPDATE}
+    build:
+      network: host
+      context: ./images/ai
+      args:        
+        - UPDATE=${SIEBEL_UPDATE}
+        - EXTRA_LANGUAGES=${SIEBEL_EXTRA_LANGUAGES}
