@@ -5,6 +5,7 @@ FROM siebel/enterprise:$UPDATE
 ENV DB_WAIT=true \
     DB_INSTALL=false \
     LD_LIBRARY_PATH=/siebel/ses/gtwysrvr/lib \
+    LICENSE_KEY_ACTIVATE=% \
     LOG_FILE=/siebel/ses/gtwysrvr/log/NameSrvr.log \
     ODBCINI=/siebel/ses/gtwysrvr/sys/.odbc.ini \
     PATH=$PATH:/siebel:/siebel/ses/gtwysrvr/bin \

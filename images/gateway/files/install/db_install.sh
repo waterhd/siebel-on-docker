@@ -15,12 +15,9 @@ cd bin
 # Alternative odbc.ini location
 export ODBCINI=/siebel/install/odbc.ini
 
-# odbcsql parameters
-dsn=SiebelInstall_DSN
-tcsql=/siebel/install/tablecount.sql
-
 # Get table count
-tc=$(./odbcsql /s $dsn /u $DB_TABLEOWNER /p $DB_TABLEOWNER_PASSWORD /h $tcsql) || die 'Could not connect to database'
+tc=$(./odbcsql /s SiebelInstall_DSN /u $DB_TABLEOWNER /p $DB_TABLEOWNER_PASSWORD /h /siebel/install/tablecount.sql) ||
+  die 'Could not connect to database'
 
 # If any tables are found, quit
 if ((tc)); then log 'Siebel schema already installed!'; exit; fi
@@ -39,8 +36,8 @@ Default Entry = TRUE
 Username = $DB_USERNAME
 Key Value = $(./encryptstring $DB_PASSWORD)
 Key Value 2 = $(./encryptstring $DB_TABLEOWNER_PASSWORD)
-ODBC Data Source = $dsn
-Data Source = $dsn
+ODBC Data Source = SiebelInstall_DSN
+Data Source = SiebelInstall_DSN
 Table Owner = $DB_TABLEOWNER
 Siebel Root = /siebel/ses/siebsrvr
 Process Name = install
@@ -86,3 +83,10 @@ EOF
 
 # Install database
 ./srvrupgwiz /m master_install.ucf || die 'Failed to install database, check log files for error messages'
+
+# Activate license key
+./odbcsql /s SiebelInstall_DSN /u $DB_TABLEOWNER /p $DB_TABLEOWNER_PASSWORD \
+  /h /siebel/install/lickey.sql "$LICENSE_KEY_ACTIVATE" || die 'Failed to activate license key(s)'
+
+# DONE
+log 'Completed database schema install'
