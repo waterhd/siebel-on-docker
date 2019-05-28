@@ -17,6 +17,16 @@ services:
       network: host
       context: ./images/java
 
+  # Siebel Application Interface (based on Java Server JRE image)
+  ai:
+    image: siebel/ai:${SIEBEL_UPDATE}
+    build:
+      network: host
+      context: ./images/ai
+      args:
+        - UPDATE=${SIEBEL_UPDATE}
+        - EXTRA_LANGUAGES=${SIEBEL_EXTRA_LANGUAGES}
+
   # Oracle Client (based on Java Server JRE image)
   oracle-client:
     image: oracle/instantclient-32:12.1.0.2
@@ -24,12 +34,32 @@ services:
       network: host
       context: ./images/instantclient-32
 
-  # Siebel Application Interface (based on Java Server JRE image)
-  ai:
-    image: siebel/ai:${SIEBEL_UPDATE}
+  # Siebel Enterprise image (based on Oracle Client image)
+  enterprise:
+    image: siebel/enterprise:$SIEBEL_UPDATE
     build:
       network: host
-      context: ./images/ai
-      args:        
-        - UPDATE=${SIEBEL_UPDATE}
-        - EXTRA_LANGUAGES=${SIEBEL_EXTRA_LANGUAGES}
+      context: ./images/enterprise
+      args:
+        - ORACLE_VERSION=$ORACLE_VERSION
+        - UPDATE=$SIEBEL_UPDATE
+        - EXTRA_LANGUAGES=$SIEBEL_EXTRA_LANGUAGES
+        - WITH_DBSRVR=$WITH_DBSRVR
+
+  # Siebel Gateway image (based on Siebel Enterprise image)
+  gateway:
+    image: siebel/gateway:$SIEBEL_UPDATE
+    build:
+      network: host
+      context: ./images/gateway
+      args:
+        - UPDATE=$SIEBEL_UPDATE
+
+  # Siebel Gateway image (based on Siebel Enterprise image)
+  server:
+    image: siebel/server:$SIEBEL_UPDATE
+    build:
+      network: host
+      context: ./images/server
+      args:
+        - UPDATE=$SIEBEL_UPDATE

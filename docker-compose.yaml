@@ -20,14 +20,14 @@ services:
     environment:
       - ORACLE_PWD=oracle12
     volumes:
-      - ./data/oradata:/opt/oracle/oradata
-      - ./scripts/database:/opt/oracle/scripts/setup
+      - ./data/oradata:/opt/oracle/oradata:z,rw
+      - ./scripts/database:/opt/oracle/scripts/setup:z,ro
     networks:
       - siebel
     ports:
       - 1521
 
-  # Siebel Application Interface Server #1
+  # Siebel Application Interface Server (1st node)
   ai1:
     image: siebel/ai:${SIEBEL_UPDATE}
     hostname: ai1
@@ -41,3 +41,35 @@ services:
       - truststore
     ports:
       - 8443
+
+  # Siebel Gateway (1st node)
+  gateway1:
+    image: siebel/gateway:${SIEBEL_UPDATE}
+    hostname: gateway1
+    domainname: ${DOMAIN}
+    networks:
+      - siebel
+    env_file:
+      - ./config/siebel.env
+    environment:
+      - DEPLOY_SCRIPT=/siebel/deploy/deploy.sh
+    secrets:
+      - keystore
+      - truststore
+    ports:
+     - 2320
+
+  # Siebel Server (1st node)
+  server1:
+    image: siebel/server:${SIEBEL_UPDATE}
+    hostname: server1
+    domainname: ${DOMAIN}
+    networks:
+      - siebel
+    env_file:
+      - ./config/siebel.env    
+    secrets:
+      - keystore
+      - truststore
+    ports:
+     - 2320
