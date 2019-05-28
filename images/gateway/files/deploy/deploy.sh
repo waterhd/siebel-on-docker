@@ -109,7 +109,7 @@ for ai in ${DEPLOY_SWSM//,/ }; do
   if ! cg_http GET profiles/swsm/$profile; then
     # Not found, deploy it
     log "Deploying AI profile $profile"
-    jq -nf swsm_$profile.json | cg_http POST profiles/swsm || die 'Failed to deploy AI profile'
+    jq -nf swsm_$profile.jq | cg_http POST profiles/swsm || die 'Failed to deploy AI profile'
   fi
 
   # Wait for AI node to be available
