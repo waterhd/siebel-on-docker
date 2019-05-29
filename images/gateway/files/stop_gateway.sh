@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-f pgrep -f siebsvc &>/dev/null; then
+if pgrep -f siebsvc &>/dev/null; then
   # Stop Gateway Server
   log 'Stopping Siebel Gateway Server...'
   $SIEBEL_ROOT/bin/stop_ns
