@@ -35,27 +35,27 @@
     },
     "UI": {
       "LogProperties": {
-        "LogLevel": "INFO"
+        "LogLevel": "ERROR"
       }
     },
     "EAI": {
       "LogProperties": {
-        "LogLevel": "INFO"
+        "LogLevel": "ERROR"
       }
     },
     "DAV": {
       "LogProperties": {
-        "LogLevel": "INFO"
+        "LogLevel": "ERROR"
       }
     },
     "RESTOutBound": {
       "LogProperties": {
-        "LogLevel": "INFO"
+        "LogLevel": "ERROR"
       }
     },
     "SOAPOutBound": {
       "LogProperties": {
-        "LogLevel": "INFO"
+        "LogLevel": "ERROR"
       }
     },
     "Applications": [
@@ -105,7 +105,7 @@
     ],
     "RESTInBoundResource": [],
     "swe": {
-      "Language": "ENU",
+      "Language": env.SIEBEL_LANGUAGE,
       "MaxQueryStringLength": -1,
       "SeedFile": "",
       "SessionMonitor": false,

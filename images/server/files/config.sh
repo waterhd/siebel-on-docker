@@ -19,8 +19,8 @@ require-var SIEBEL_ENTERPRISE
 # If Siebel server name is not defined, use short host name
 set-default SIEBEL_SERVER "$(hostname -s)"
 
-# Set temp directory
-set-default TMPDIR /dev/shm
+# Set temp dir
+export TMPDIR=/dev/shm
 
 # Siebel gateway connection explicitly defined?
 if [[ ! $SIEBEL_GATEWAY ]]; then
@@ -35,7 +35,7 @@ if [[ ! $SIEBEL_GATEWAY ]]; then
     require-var GATEWAY_HOST
 
     # Set Siebel Gateway connection string
-    set-default SIEBEL_GATEWAY '%s:%d' $GATEWAY_HOST 8990
+    set-default SIEBEL_GATEWAY "$GATEWAY_HOST:8990"
   fi
 fi
 

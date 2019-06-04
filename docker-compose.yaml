@@ -12,6 +12,15 @@ secrets:
   truststore:
     file: ./config/truststore.jks
 
+#volumes:
+  #fs:
+  #ai-custom:
+  #ai1-config:
+  #ai2-config:
+  #gateway1-config:
+  #gateway1-data:
+  #server1-config:
+
 services:
 
   # Oracle Database
@@ -36,6 +45,27 @@ services:
       - siebel
     env_file:
       - ./config/siebel.env
+        #volumes:
+        #- ai1-config:/siebel/config
+        #- ai-custom:/siebel/custom
+    secrets:
+      - keystore
+      - truststore
+    ports:
+      - 8443
+
+  # Siebel Application Interface Server (1st node)
+  ai2:
+    image: siebel/ai:${SIEBEL_UPDATE}
+    hostname: ai2
+    domainname: ${DOMAIN}
+    networks:
+      - siebel
+    env_file:
+      - ./config/siebel.env
+        #volumes:
+        #- ai2-config;/siebel/config
+        #- ai-custom:/siebel/custom
     secrets:
       - keystore
       - truststore
@@ -53,6 +83,9 @@ services:
       - ./config/siebel.env
     environment:
       - DEPLOY_SCRIPT=/siebel/deploy/deploy.sh
+        #volumes:
+        #- gateway1-config:/siebel/config
+        #- gateway1-data:/siebel/data
     secrets:
       - keystore
       - truststore
@@ -67,7 +100,10 @@ services:
     networks:
       - siebel
     env_file:
-      - ./config/siebel.env    
+      - ./config/siebel.env
+        #    volumes:
+        #- server1-config:/siebel/config
+        #- fs:/siebel/fs
     secrets:
       - keystore
       - truststore

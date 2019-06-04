@@ -106,8 +106,7 @@ wait-for() {
     elif ((SECONDS >= end)); then
       log 'Time out occurred waiting for host %s' $host
       return 1
-    else
-      echo $SECONDS $end
+    else      
       sleep 5
     fi
   done

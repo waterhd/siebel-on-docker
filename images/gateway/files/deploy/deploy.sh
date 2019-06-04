@@ -28,17 +28,12 @@ cg_http GET heartbeat
 # Get bootstrap information
 cg_http GET bootstrapCG
 
-require-var DB_HOST DB_PORT DB_SERVICE SADMIN_USERNAME SADMIN_PASSWORD REGISTRY_PORT
-
-# Default gateway security profile
-set-default GW_SECURITY_PROFILE db
-
-# Security jq file
-secjq=sec_$GW_SECURITY_PROFILE.jq
+# Check for required environment variables before proceeding
+require-var DB_{HOST,PORT,SERVICE,USERNAME,PASSWORD} SADMIN_{USERNAME,PASSWORD} REGISTRY_PORT GW_SECURITY_PROFILE
 
 # Deploy Gateway Security Profile
 log 'Deploying Gateway Security profile'
-jq -nf $secjq | cg_http POST GatewaySecurityProfile || die 'Failed to deploy security profile'
+jq -nf sec_$GW_SECURITY_PROFILE.jq | cg_http POST GatewaySecurityProfile || die 'Failed to deploy security profile'
 
 # From now on, use basic authentication
 auth="-u $SADMIN_USERNAME:$SADMIN_PASSWORD"
@@ -47,13 +42,14 @@ auth="-u $SADMIN_USERNAME:$SADMIN_PASSWORD"
 log 'Bootstrapping Siebel Gateway'
 jq -nf bootstrap.jq | cg_http POST bootstrapCG || die 'Failed to bootstrap Siebel Gateway'
 
+# If enterprise name is not set, deployment stops here
 if [[ ! $SIEBEL_ENTERPRISE ]]; then
   log 'Enterprise not set, ending deployment'
   exit 0
 fi
 
 # Check for required variables
-require-var SIEBEL_FS DB_USERNAME DB_PASSWORD DB_TABLEOWNER
+require-var SIEBEL_FS DB_TABLEOWNER
 
 # Create Enterprise Profile
 log 'Deploying enterprise profile'

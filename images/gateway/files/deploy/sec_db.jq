@@ -14,7 +14,8 @@
         "TableOwner": env.DB_TABLEOWNER,
         "HashUserPwd": "false",
         "HashAlgorithm": "SHA1",
-        "CRC": ""
+        "CRC": "",
+        "_prevType": ""
       }
     ],
     "SecAdptName": "DBSecAdpt",
@@ -22,8 +23,8 @@
     "NSAdminRole": [
       "Siebel Administrator"
     ],
-    "TestUserName": env.SADMIN_USERNAME,
-    "TestUserPwd": env.SADMIN_PASSWORD,
+    "TestUserName": env.DB_USERNAME,
+    "TestUserPwd": env.DB_PASSWORD,
     "DBSecurityAdapterDataSource": "SIEBELDB",
     "DBSecurityAdapterPropagateChange": false
   }

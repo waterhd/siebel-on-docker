@@ -10,23 +10,21 @@
 trap '/siebel/stop_gateway.sh' INT TERM KILL QUIT
 
 # Forward Tomcat logs to STDOUT of current process
-export CATALINA_OUT="/proc/$$/fd/1"
+export CATALINA_OUT=/proc/$$/fd/1
 
 # Start Tomcat
 $CATALINA_HOME/bin/startup.sh
 
-# Start Siebel Gateway, if already created
+# Check for Gateway Service file
 if [[ -f sys/svc.gtwyns. ]]; then
 
+  # File found, start Siebel Gateway
   log 'Starting Siebel Gateway Server'
   bin/start_ns
 
-# Or run deployment script, if provided
-elif [[ -f $DEPLOY_SCRIPT ]]; then
-
-  # Run deployment script, if provided
-  . $DEPLOY_SCRIPT
-
+# Not found? Run deployment script, if provided
+elif [[ -x $DEPLOY_SCRIPT ]]; then
+  $DEPLOY_SCRIPT
 fi
 
 # Wait command will wait for OS signal

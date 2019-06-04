@@ -4,6 +4,7 @@ FROM siebel/enterprise:$UPDATE
 
 ENV DB_WAIT=true \
     DB_INSTALL=false \
+    GW_SECURITY_PROFILE=db \
     LD_LIBRARY_PATH=/siebel/ses/gtwysrvr/lib \
     LICENSE_KEY_ACTIVATE=% \
     LOG_FILE=/siebel/ses/gtwysrvr/log/NameSrvr.log \

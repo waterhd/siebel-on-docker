@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 if pgrep -f siebsvc &>/dev/null; then
   # Stop Siebel Server
